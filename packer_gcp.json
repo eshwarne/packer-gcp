@@ -1,0 +1,30 @@
+{
+    // REMOVE COMMENTS(not permitted in json) BEFORE EXCEUTING PACKER BUILD
+    //the env param in variables picks env variables from the runtime which is running packer build command from
+    "variables": {
+        "service_account_json": "PATH_TO_YOUR_SERVICE_ACCOUNT",
+         //the env param in variables picks env variables from the runtime which is running packer build command from
+        "project_id": "{{env `PROJECT_ID`}}"
+        },
+  "builders": [
+    {
+      "type": "googlecompute",
+      "project_id": "{{user `project_id`}}",
+      "machine_type": "n1-standard-1",
+      "source_image": "ubuntu-image",
+      "region": "us-central1",
+      "zone": "us-central1-a",
+      "image_description": "image built with nodejs preinstalled",
+      "image_name": "new_custom_image",
+      "disk_size": 10,
+      "account_file": "{{ user `service_account_json`}}"
+    }],
+    "provisioners": [
+        {
+          "type": "shell",
+          "script": "some_script.sh",
+          "execute_command": "echo 'just another builder installs nodejs'"
+        }
+      ]
+    
+}
